@@ -31,6 +31,7 @@ const reviews = async function (req, res) {
 
         //check userID is exist in userModel or not 
         const findBook = await Book.findById({_id : data, isDeleted : false});
+        console.log(findBook)
         if(!findBook) {
             return res.status(404).send({status: false, message: "data does not found according to bookId"});
         }

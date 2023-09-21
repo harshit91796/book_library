@@ -30,11 +30,11 @@ async function auth(req,res,next){
         const token = req.headers['x-api-key']
         // console.log(token)
         if(!token){
-            res.status(401).send({status : false , msg : "token is absent"})
+          return  res.status(401).send({status : false , msg : "token is absent"})
         }
         const decode = jwt.verify(token,process.env.JWT_KEY) //rush
         if(!decode){
-            res.status(400).send({status : false , msg : "not autherized"})
+          return  res.status(400).send({status : false , msg : "not autherized"})
         }
         req.decoded = decode
         
@@ -55,7 +55,7 @@ async function Authorisation(req,res,next){
         return res.status(400).send({ status: false, message: "invalid id" });
     }
     if (!isValidObjectId(bodyId)) {
-        return res.status(400).send({ status: false, message: "invalid title" });
+        return res.status(400).send({ status: false, message: "invalid id" });
     }
     const findUserId = await User.findById(bodyId);
         if(!findUserId) {

@@ -5,13 +5,13 @@ const bookSchema = new mongoose.Schema({
         type : String,
         requrired: true
     },
-    title: {
+    title : {
         type: String,
         requrired: true,
         unique: true,
         trim: true
     },
-    excerpt: {
+    excerpt : {
         type:String,
         requrired: true,
         trim: true

@@ -11,18 +11,13 @@ const isValid = function (value) {
 };
 const createUser = async function (req, res) {
   try {
-    const { title , name, phone, email, address,password} = req.body
+    const { name, phone, email, address,password} = req.body
     
     
   if(req.body === null){
    return res.status(400).send({status : false, msg : "enter the data of user"})
   }
-  if(!["Mr", "Mrs", "Miss"].includes(title)){
-    return  res.status(400).send({status : false, msg : "title required" })
-  }
-  if (!isValid(title)) {
-    return res.status(400).send({ status: false, message: "invalid excerpt" });
-}
+
    if(!address){
     return  res.status(400).send({status : false, msg : "address required" })
    }

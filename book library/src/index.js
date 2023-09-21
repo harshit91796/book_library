@@ -2,7 +2,7 @@ const express = require('express')
 const app = express()
 const router = require('../src/routes/routes');
 const mongoose = require('mongoose')
-const multer = require('multer')
+
 const dotenv = require('dotenv')
 dotenv.config()
 
@@ -14,7 +14,7 @@ mongoose.connect(process.env.URI).then(()=>{
     err => console.log(err)
 )
 
-app.use( multer().any())
+
 
 app.use('/',router)
 

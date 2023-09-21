@@ -2,7 +2,7 @@ const Book = require('../models/bookModel')
 const User = require('../models/userModel')
 const Review = require('../models/reviewModel')
 const moment = require('moment');
-const aws= require("aws-sdk")
+
 const { isValidObjectId } = require('mongoose');
 const isValid = function (value) {
     if (typeof value === "undefined" || value === null) return false;
@@ -10,54 +10,14 @@ const isValid = function (value) {
     return true;
 };
 
-let uploadFile= async ( file) =>{
-    return new Promise( function(resolve, reject) {
-     // this function will upload file to aws and return the link
-     let s3= new aws.S3({apiVersion: '2006-03-01'}); // we will be using the s3 service of aws
- 
-     var uploadParams= {
-         ACL: "public-read",
-         Bucket: "classroom-training-bucket",  //HERE
-         Key: "abc/" + file.originalname, //HERE 
-         Body: file.buffer
-     }
- 
- 
-     s3.upload( uploadParams, function (err, data ){
-         if(err) {
-             return reject({"error": err})
-         }
-         console.log(data)
-         console.log("file uploaded succesfully")
-         return resolve(data.Location)
-     })
- 
-     // let data= await s3.upload( uploadParams)
-     // if( data) return data.Location
-     // else return "there is an error"
- 
-    })
- }
-
-
 
 async function createbook(req,res){
     try{
         const { title, excerpt, ISBN, category, subcategory, releasedAt } = req.body;
-        const files = req.files
-     console.log(files)
-
-        if(files && files.length>0){
-            let uploadedFileURL= await uploadFile( files[0] )
-            // res.status(201).send({msg: "file uploaded succesfully", data: uploadedFileURL})
-            req.body.bookCover = uploadedFileURL
-        }
-        else{
-            res.status(400).send({ msg: "No file found2" })
-        }
+      
         
-    const data = req.body;
-    console.log(data)
+    
+    
     
     // if (!isValid(req.body.bookCover)) {
     //     return res.status(400).send({ status: false, message: "invalid title" });
@@ -90,12 +50,18 @@ async function createbook(req,res){
     if (unique) {
         return re.status(400).send({ status: false, message: "Book is already exist" });
     }
+
     const trimReleasedAt = releasedAt.trim();
     if (moment(trimReleasedAt, "YYYY-MM-DD").format("YYYY-MM-DD") !== trimReleasedAt) {
         return res.status(400).send({ status: false, message: "Please enter the Date in the format of 'YYYY-MM-DD'." });
 
     }
-    const createData = await Book.create(req.body);
+    console.log(req.decoded)
+    const data = {
+        userId : req.decoded.userId,
+        ...req.body
+    };
+    const createData = await Book.create(data);
     return res.status(201).send({ status: true, message: "Success", data: createData });
 
 } catch (error) {

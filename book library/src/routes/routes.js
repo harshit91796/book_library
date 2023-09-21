@@ -3,18 +3,12 @@ const {createUser,login} = require('../controller/userCont');
 const {createbook,getBook,getBookById,updateBook,deleteBook} = require('../controller/bookCont');
 const {reviews,updateReviews,deleteReview} = require('../controller/reviewCont');
 const {auth,Authorisation,updateAuthorisation, hashpass} = require('../middleware/auth');
-const aws= require("aws-sdk")
+
 const router = express.Router();
 
 router.post('/hello',(req,res) =>{
     console.log("helloooo")
     res.send({msg : "gjygjjg"})
-})
-
-aws.config.update({
-    accessKeyId: "AKIAY3L35MCRZNIRGT6N",
-    secretAccessKey: "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",
-    region: "ap-south-1"
 })
 
 
